@@ -8,6 +8,7 @@ class UserCreate(BaseModel):
 
 class User(UserCreate):
     id: int
+    verified: bool = False
 
     class Config:
         from_attributes = True
