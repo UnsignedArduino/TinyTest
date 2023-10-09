@@ -1,10 +1,10 @@
-create table users
+CREATE TABLE users
 (
-    id              serial
-        constraint users_pk
-            primary key,
-    username        varchar(255) not null
-        constraint users_pk2
-            unique,
-    hashed_password char(60)     not null
+    id              SERIAL
+        CONSTRAINT users_pk
+            PRIMARY KEY ,
+    username        VARCHAR(255) NOT NULL
+        CONSTRAINT users_pk2
+            UNIQUE ,
+    hashed_password CHAR(60)     NOT NULL
 );
