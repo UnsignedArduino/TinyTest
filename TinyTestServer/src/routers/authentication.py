@@ -1,3 +1,4 @@
+import logging
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -6,10 +7,15 @@ from fastapi.security import OAuth2PasswordRequestForm
 from authentication.models import Token
 from authentication.user_auth import (
     authenticate_user_and_get_token,
+    get_current_user,
     get_password_hash,
 )
-from database.crud.users import create_user, get_user_by_username
-from database.schema.users import UserCreate
+from database.crud.users import create_user, get_user_by_username, set_user_jwt_session
+from database.schema.users import User, UserCreate
+from utils.logger import create_logger
+
+logger = create_logger(name=__name__, level=logging.DEBUG)
+
 
 router = APIRouter(prefix="/authentication", tags=["authentication"])
 
@@ -17,6 +23,11 @@ router = APIRouter(prefix="/authentication", tags=["authentication"])
 @router.post("/sign-in", response_model=Token)
 async def sign_in(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
     return authenticate_user_and_get_token(form_data.username, form_data.password)
+
+
+@router.post("/sign-out")
+async def users_me(current_user: Annotated[User, Depends(get_current_user)]):
+    set_user_jwt_session(current_user.username, None)
 
 
 @router.post("/sign-up", response_model=Token)
