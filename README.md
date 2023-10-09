@@ -1,3 +1,3 @@
 # TinyTest
 
-A distributed testing program for chess engine. 
+A distributed testing program for chess engines. 
