@@ -7,7 +7,8 @@ CREATE TABLE users
         CONSTRAINT users_pk2
             UNIQUE,
     hashed_password CHAR(60)              NOT NULL,
-    verified        BOOLEAN DEFAULT FALSE NOT NULL
+    verified        BOOLEAN DEFAULT FALSE NOT NULL,
+    admin           BOOLEAN DEFAULT FALSE NOT NULL
 );
 
 
