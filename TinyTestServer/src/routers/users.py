@@ -5,6 +5,7 @@ from fastapi import APIRouter, Depends
 
 from authentication.user_auth import (
     get_current_user,
+    get_current_verified_user,
 )
 from database.crud.users import (
     delete_user_api_key,
@@ -20,27 +21,45 @@ logger = create_logger(name=__name__, level=logging.DEBUG)
 router = APIRouter(prefix="/users", tags=["users"])
 
 
-@router.get("/me", response_model=User)
+@router.get(
+    "/me",
+    response_model=User,
+    summary="Get JSON object about current user.",
+    description="Get JSON object about current user.",
+)
 async def get_users_me(current_user: Annotated[User, Depends(get_current_user)]):
     return current_user
 
 
-@router.get("/me/api_key")
+@router.get(
+    "/me/api_key",
+    summary="Get the API key for the current user.",
+    description="Get the API key for the current user. Can be null if user does not "
+    "have an API key. Must be a verified user.",
+)
 async def get_users_me_api_key(
-    current_user: Annotated[User, Depends(get_current_user)]
+    current_user: Annotated[User, Depends(get_current_verified_user)]
 ):
     return get_user_api_key(current_user.username)
 
 
-@router.post("/me/api_key")
+@router.post(
+    "/me/api_key",
+    summary="(Re)generate the API key for the current user.",
+    description="(Re)generate the API key for the current user. Must be a verified user.",
+)
 async def post_users_me_api_key(
-    current_user: Annotated[User, Depends(get_current_user)]
+    current_user: Annotated[User, Depends(get_current_verified_user)]
 ):
     return reset_user_api_key(current_user.username)
 
 
-@router.delete("/me/api_key")
+@router.delete(
+    "/me/api_key",
+    summary="Delete API key for the current user.",
+    description="Delete the API key for the current user. Must be a verified user.",
+)
 async def delete_users_me_api_key(
-    current_user: Annotated[User, Depends(get_current_user)]
+    current_user: Annotated[User, Depends(get_current_verified_user)]
 ):
     return delete_user_api_key(current_user.username)

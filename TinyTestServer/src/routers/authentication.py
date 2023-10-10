@@ -19,12 +19,22 @@ logger = create_logger(name=__name__, level=logging.DEBUG)
 router = APIRouter(prefix="/authentication", tags=["authentication"])
 
 
-@router.post("/sign-in", response_model=Token)
+@router.post(
+    "/sign-in",
+    response_model=Token,
+    summary="Sign in with a username and password to get a JWT.",
+    description="Sign in with a username and password to get a JWT. Uses Oauth2PasswordRequestForm.",
+)
 async def post_sign_in(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
     return authenticate_user_and_get_token(form_data.username, form_data.password)
 
 
-@router.post("/sign-up", response_model=Token)
+@router.post(
+    "/sign-up",
+    response_model=Token,
+    summary="Sign up with a username and password to get a JWT.",
+    description="Sign up with a username and password to get a JWT. Start off as unverified, must be manually verified by an admin.",
+)
 async def post_sign_up(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
     if get_user_by_username(form_data.username) is not None:
         raise HTTPException(
