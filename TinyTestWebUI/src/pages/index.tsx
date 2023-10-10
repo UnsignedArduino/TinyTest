@@ -2,14 +2,20 @@ import Layout from "@/components/Layout";
 import { promises as fs } from "fs";
 import getAppProps, { AppProps } from "@/components/WithAppProps";
 import generateSiteWebmanifest from "@/scripts/Utils/SiteWebmanifest";
+import { useSession } from "next-auth/react";
 
 const pageName = "Home";
 
 export default function Home({ appProps }: { appProps: AppProps }) {
+  const { data: session } = useSession();
+
   return (
     <Layout title={pageName} currentPage={pageName} appProps={appProps}>
       <>
-        <h1>Welcome to TinyTest</h1>
+        <h1>
+          Welcome to TinyTest
+          {session?.user?.name != null ? `, ${session.user.name}` : ""}!
+        </h1>
         TinyTest is the distributed testing program for{" "}
         <a
           href="https://github.com/Bobingstern/TinyChess"
