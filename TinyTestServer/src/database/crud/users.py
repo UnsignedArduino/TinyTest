@@ -32,31 +32,6 @@ def get_user_by_username(username: str) -> Optional[User]:
             return User.model_validate(result)
 
 
-def set_user_jwt_session(username: str, jwt_session: Optional[str]):
-    with engine.begin() as conn:
-        logger.debug(f"Setting JWT session for {username}")
-        conn.execute(
-            text(
-                "UPDATE users SET session_jwt = :session_jwt WHERE username = :username"
-            ),
-            {"session_jwt": jwt_session, "username": username},
-        )
-
-
-def get_user_jwt_session(username: str) -> Optional[str]:
-    with engine.connect() as conn:
-        logger.debug(f"Getting JWT session for {username}")
-        result = conn.execute(
-            text("SELECT session_jwt FROM users WHERE username=:username"),
-            {"username": username},
-        ).first()[0]
-        if result:
-            logger.debug(f"Unverified JWT session present for {username}")
-            return result
-        else:
-            logger.debug(f"Could not find JWT session for {username}")
-
-
 def reset_user_api_key(username: str):
     with engine.begin() as conn:
         logger.debug(f"Setting new API key for {username}")

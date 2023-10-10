@@ -9,11 +9,7 @@ from passlib.context import CryptContext
 
 from authentication.models import Token
 from consts import ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM, SECRET_KEY
-from database.crud.users import (
-    get_user_by_username,
-    get_user_jwt_session,
-    set_user_jwt_session,
-)
+from database.crud.users import get_user_by_username
 from database.schema.users import User
 from utils.logger import create_logger
 
@@ -64,7 +60,6 @@ def authenticate_user_and_get_token(username: str, password: str) -> Token:
     access_token = create_access_token(
         data={"username": user.username}, expires_delta=access_token_expires
     )
-    set_user_jwt_session(username, access_token)
     return Token(access_token=access_token, token_type="bearer")
 
 
@@ -72,10 +67,6 @@ def authenticate_token(token: str) -> Optional[str]:
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username = payload.get("username")
-        db_jwt = get_user_jwt_session(username)
-        if db_jwt != token:
-            logger.debug(f"JWT session for {username} does not match database!")
-            return None
         logger.debug(f"JWT session validated!")
         return username
     except JWTError:

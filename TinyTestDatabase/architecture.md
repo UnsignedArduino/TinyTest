@@ -8,7 +8,6 @@ Rough outline of the database architecture tables and columns.
 * Hashed password
 * Verified (bool)
 * Admin (bool)
-* Jwt session
 * API key
 
 ## Games
