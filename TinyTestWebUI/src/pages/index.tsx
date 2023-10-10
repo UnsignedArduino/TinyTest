@@ -18,7 +18,7 @@ export default function Home({ appProps }: { appProps: AppProps }) {
         >
           TinyChess
         </a>
-        .
+        , a UCI chess engine designed to run with low RAM.
       </>
     </Layout>
   );
