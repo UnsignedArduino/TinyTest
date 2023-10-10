@@ -1,24 +1,75 @@
 {
   "name": "tinytestwebui",
   "version": "0.1.0",
+  "description": "The web UI for TinyTest - a distributed testing program for chess engines.",
+  "keywords": [
+    "react",
+    "bootstrap",
+    "website",
+    "nextjs",
+    "chess",
+    "engine",
+    "chess-engine",
+    "testing",
+    "sprt",
+    "distributed",
+    "tiny-chess"
+  ],
   "private": true,
+  "homepage": "https://github.com/UnsignedArduino/TinyTest",
+  "bugs": "https://github.com/UnsignedArduino/TinyTest/issues",
+  "license": "GPL-2.1-or-later",
+  "author": {
+    "name": "UnsignedArduino",
+    "email": "UnsignedArduino@outlook.com",
+    "url": "https://github.com/UnsignedArduino"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/UnsignedArduino/TinyTest.git"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "test": "yarn run playwright test",
+    "lint": "next lint",
+    "writeLint": "next lint --fix",
+    "format": "yarn prettier --check .",
+    "writeFormat": "yarn prettier --write .",
+    "typecheck": "tsc --noEmit",
+    "prepare": "cd .. && husky install "
   },
   "dependencies": {
+    "@popperjs/core": "2.11.8",
+    "@tippyjs/react": "^4.2.6",
+    "bootstrap": "5.3.2",
+    "bootstrap-icons": "^1.10.4",
+    "next": "13.5.4",
+    "next-auth": "^4.23.1",
+    "nextjs-google-adsense": "^1.0.0",
+    "nextjs-google-analytics": "^2.3.3",
+    "nextjs-progressbar": "^0.0.16",
+    "pg": "^8.11.3",
     "react": "^18",
     "react-dom": "^18",
-    "next": "13.5.4"
+    "react-toastify": "^9.1.2",
+    "tippy.js": "^6.3.7"
   },
   "devDependencies": {
-    "typescript": "^5",
-    "@types/node": "^20",
+    "@types/bootstrap": "^5.2.6",
+    "@types/node": "^20.8.4",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
-    "eslint-config-next": "13.5.4"
+    "eslint-config-next": "13.5.4",
+    "eslint-config-prettier": "^9.0.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^14.0.1",
+    "prettier": "^3.0.3",
+    "typescript": "^5"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   }
 }
