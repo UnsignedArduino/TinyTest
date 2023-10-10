@@ -1,3 +1,4 @@
+import { BuiltInProviderType } from "next-auth/providers/index";
 import {
   ClientSafeProvider,
   getProviders,
@@ -7,7 +8,6 @@ import {
   useSession,
 } from "next-auth/react";
 import React from "react";
-import { BuiltInProviderType } from "next-auth/providers";
 
 export default function ProfileOffcanvas() {
   const { data: session } = useSession();
