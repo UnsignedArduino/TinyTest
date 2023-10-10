@@ -1,8 +1,10 @@
 import logging
+import secrets
 from typing import Optional
 
 from sqlalchemy import text
 
+from consts import API_KEY_LENGTH
 from database.connection import engine
 from database.schema.users import User, UserCreate
 from utils.logger import create_logger
@@ -53,6 +55,35 @@ def get_user_jwt_session(username: str) -> Optional[str]:
             return result
         else:
             logger.debug(f"Could not find JWT session for {username}")
+
+
+def reset_user_api_key(username: str):
+    with engine.begin() as conn:
+        logger.debug(f"Setting new API key for {username}")
+        conn.execute(
+            text("UPDATE users SET api_key = :api_key WHERE username = :username"),
+            {"api_key": secrets.token_hex(API_KEY_LENGTH), "username": username},
+        )
+
+
+def delete_user_api_key(username: str):
+    with engine.begin() as conn:
+        logger.debug(f"Deleting API key for {username}")
+        conn.execute(
+            text("UPDATE users SET api_key = null WHERE username = :username"),
+            {"username": username},
+        )
+
+
+def get_user_api_key(username: str) -> Optional[str]:
+    with engine.connect() as conn:
+        logger.debug(f"Getting API key for {username}")
+        result = conn.execute(
+            text("SELECT api_key FROM users WHERE username=:username"),
+            {"username": username},
+        ).first()[0]
+        if result and len(result) > 0:
+            return result
 
 
 def create_user(user: UserCreate):

@@ -73,7 +73,6 @@ def authenticate_token(token: str) -> Optional[str]:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username = payload.get("username")
         db_jwt = get_user_jwt_session(username)
-        print(db_jwt, token)
         if db_jwt != token:
             logger.debug(f"JWT session for {username} does not match database!")
             return None

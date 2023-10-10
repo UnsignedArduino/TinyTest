@@ -21,17 +21,17 @@ router = APIRouter(prefix="/authentication", tags=["authentication"])
 
 
 @router.post("/sign-in", response_model=Token)
-async def sign_in(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
+async def post_sign_in(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
     return authenticate_user_and_get_token(form_data.username, form_data.password)
 
 
 @router.post("/sign-out")
-async def users_me(current_user: Annotated[User, Depends(get_current_user)]):
+async def post_users_me(current_user: Annotated[User, Depends(get_current_user)]):
     set_user_jwt_session(current_user.username, None)
 
 
 @router.post("/sign-up", response_model=Token)
-async def sign_up(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
+async def post_sign_up(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
     if get_user_by_username(form_data.username) is not None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
