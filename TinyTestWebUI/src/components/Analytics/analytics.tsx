@@ -70,6 +70,8 @@ export function Analytics(): JSX.Element {
     if (getEnvironment() === "development") {
       console.info("Google Analytics disabled during development");
       return;
+    } else {
+      console.log("Enabling Google Analytics");
     }
 
     setUseGA(true);
