@@ -8,6 +8,7 @@ Will be handled by web UI. Using GitHub sign-in to authenticate user, we then ge
 
 * Id
 * Username
+* Email
 * Profile picture URL
 * Verified (bool)
 * Admin (bool)
