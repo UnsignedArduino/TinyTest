@@ -7,4 +7,3 @@ pydantic
 python-dotenv
 SQLAlchemy
 psycopg2
-ngrok-api
