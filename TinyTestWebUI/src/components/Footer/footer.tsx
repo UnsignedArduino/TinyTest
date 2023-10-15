@@ -42,10 +42,10 @@ function Footer(): JSX.Element {
         title: "Legal",
         link: "/legal",
       },
-      // {
-      //   title: "Status page",
-      //   link: "https://stats.uptimerobot.com/pjpkZH9Y0k",
-      // },
+      {
+        title: "Status page",
+        link: "https://tinytest.instatus.com/",
+      },
     ],
   ];
 
