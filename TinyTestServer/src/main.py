@@ -13,4 +13,5 @@ app.include_router(users.router)
 
 
 if __name__ == "__main__":
+    logger.debug("Starting WSGI server")
     uvicorn.run("main:app", host="0.0.0.0", port=4000)
