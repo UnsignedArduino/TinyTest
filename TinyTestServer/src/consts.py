@@ -12,5 +12,6 @@ load_dotenv()
 
 SECRET_KEY = os.getenv("JWT_SECRET_KEY")
 DATABASE_URL = os.getenv("DATABASE_URL")
+PORT = int(os.getenv("PORT"))
 
 API_KEY_LENGTH = 32
