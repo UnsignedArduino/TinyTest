@@ -34,7 +34,7 @@ Need to be verified to claim games to run.
 * Id
 * Engine 1 (git url, commit, build configuration id)
 * Engine 2 (git url, commit, build configuration id)
-* Sprt Params (elo 1, elo 2, alpha, beta, game count, time control, book)
+* Sprt Params (elo 1, elo 2, alpha, beta, game count, time control, opening book id)
 * Queued games (int)
 * Running games (int)
 * Finished games (white mates, black mates, draws, canceled, errors)
@@ -52,3 +52,11 @@ Will be used by both client and web. Reading does not need authentication, writi
 * Id
 * Name (ex. TinyChess debug, Stockfish release, Lc0 debug)
 * Build commands
+
+## Opening books
+
+Will be used by both client and web. Reading does not need authentication, writing needs admin privileges.  
+
+* Id
+* Name
+* ZIP contents
