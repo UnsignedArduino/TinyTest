@@ -46,6 +46,7 @@ export default function ProfileOffcanvas() {
             <div className="offcanvas-body">
               <ul className="list-unstyled">
                 <li>
+                  {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
                   <a href="/account">Visit account page</a>
                 </li>
               </ul>
