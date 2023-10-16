@@ -44,6 +44,11 @@ export default function ProfileOffcanvas() {
               ></button>
             </div>
             <div className="offcanvas-body">
+              <ul className="list-unstyled">
+                <li>
+                  <a href="/account">Visit account page</a>
+                </li>
+              </ul>
               <button
                 type="button"
                 className="btn btn-secondary"

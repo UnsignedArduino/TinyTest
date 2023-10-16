@@ -1,8 +1,25 @@
 import { useSession } from "next-auth/react";
 
 export default function Profile() {
-  const { data: session } = useSession();
-  if (session) {
+  const { data: session, status } = useSession();
+  if (status === "loading") {
+    return (
+      <>
+        <button
+          type="button"
+          className="btn btn-secondary"
+          data-bs-target="#profileOffcanvas"
+          data-bs-toggle="offcanvas"
+          aria-controls="profileOffcanvas"
+          // disabled={true}
+        >
+          <p className="placeholder-glow m-0 p-0">
+            <span className="placeholder" style={{ width: "3em" }} />
+          </p>
+        </button>
+      </>
+    );
+  } else if (session) {
     return (
       <>
         <button

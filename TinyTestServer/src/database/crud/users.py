@@ -1,4 +1,5 @@
 import logging
+from typing import Optional
 
 from sqlalchemy import text
 
@@ -14,7 +15,7 @@ def is_user_id_registered(user_id: int) -> bool:
         return (
             conn.execute(
                 text("SELECT COUNT(id) FROM users WHERE id=:id"), {"id": user_id}
-            ).all()[0][0]
+            ).first()[0]
             > 0
         )
 
@@ -25,7 +26,7 @@ def is_user_id_verified(user_id: int) -> bool:
             conn.execute(
                 text("SELECT COUNT(id) FROM users WHERE id=:id AND verified=TRUE"),
                 {"id": user_id},
-            ).all()[0][0]
+            ).first()[0]
             > 0
         )
 
@@ -39,7 +40,7 @@ def is_user_id_admin(user_id: int) -> bool:
                     "WHERE id=:id AND verified=TRUE AND admin=TRUE"
                 ),
                 {"id": user_id},
-            ).all()[0][0]
+            ).first()[0]
             > 0
         )
 
@@ -54,7 +55,7 @@ def is_user_id_system(user_id: int) -> bool:
                     "AND verified=TRUE AND admin=TRUE"
                 ),
                 {"id": user_id},
-            ).all()[0][0]
+            ).first()[0]
             > 0
         )
 
@@ -68,7 +69,7 @@ def is_api_key_verified(api_key: str) -> bool:
                     "WHERE api_key=:api_key AND verified=TRUE"
                 ),
                 {"api_key": api_key},
-            ).all()[0][0]
+            ).first()[0]
             > 0
         )
 
@@ -82,7 +83,7 @@ def is_api_key_admin(api_key: str) -> bool:
                     "WHERE api_key=:api_key AND verified=TRUE AND admin=TRUE"
                 ),
                 {"api_key": api_key},
-            ).all()[0][0]
+            ).first()[0]
             > 0
         )
 
@@ -97,7 +98,7 @@ def is_api_key_system(api_key: str) -> bool:
                     "AND verified=TRUE AND admin=TRUE"
                 ),
                 {"api_key": api_key},
-            ).all()[0][0]
+            ).first()[0]
             > 0
         )
 
@@ -128,4 +129,24 @@ def register_user(user: RegisteringUser):
                 "email": user.email,
                 "profile_url": user.image,
             },
+        )
+
+
+def id_to_api_token(user_id: int) -> Optional[str]:
+    with engine.connect() as conn:
+        result = conn.execute(
+            text("SELECT api_key FROM users WHERE id=:id"),
+            {"id": user_id},
+        ).first()
+        if result is None:
+            return None
+        else:
+            return result[0]
+
+
+def id_set_api_token(user_id: int, api_token: str):
+    with engine.begin() as conn:
+        conn.execute(
+            text("UPDATE users SET api_key=:api_key WHERE id=:id"),
+            {"id": user_id, "api_key": api_token},
         )

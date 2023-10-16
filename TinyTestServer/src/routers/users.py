@@ -1,9 +1,16 @@
 import logging
+import secrets
 from typing import Annotated
 
-from fastapi import APIRouter, HTTPException, Header, status
+from fastapi import APIRouter, Body, HTTPException, Header, status
 
-from database.crud.users import is_api_key_system, register_user
+from consts import API_KEY_LENGTH
+from database.crud.users import (
+    id_set_api_token,
+    id_to_api_token,
+    is_api_key_system,
+    register_user,
+)
 from database.schema.users import RegisteringUser
 from utils.logger import create_logger
 
@@ -34,3 +41,35 @@ async def post_register_user(
     ):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
     register_user(registering_user)
+
+
+@router.post(
+    "/id_to_api_token",
+    summary="Get the API token from a user id.",
+)
+async def post_id_to_api_token(
+    user_id: Annotated[int, Body()],
+    x_api_token: StringHeader = None,
+):
+    if not is_api_key_system(x_api_token) or user_id == 1:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+    token = id_to_api_token(user_id)
+    if token is None:
+        token = secrets.token_hex(API_KEY_LENGTH)
+        id_set_api_token(user_id, token)
+    return {"api_token": token}
+
+
+@router.post(
+    "/id_regenerate_api_token",
+    summary="Regenerate the API token for a user.",
+)
+async def post_id_regenerate_api_token(
+    user_id: Annotated[int, Body()],
+    x_api_token: StringHeader = None,
+):
+    if not is_api_key_system(x_api_token) or user_id == 1:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+    token = secrets.token_hex(API_KEY_LENGTH)
+    id_set_api_token(user_id, token)
+    return {"api_token": token}
