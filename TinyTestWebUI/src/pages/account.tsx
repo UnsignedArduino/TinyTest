@@ -126,9 +126,10 @@ function APITokenSetting() {
                 "Failed to regenerate API token, reloading page!",
                 NotificationType.Error,
               );
-              setRegenerating(false);
             }
-            window.location.reload();
+            setTimeout(() => {
+              window.location.reload();
+            }, 5000);
           });
         }}
       >
