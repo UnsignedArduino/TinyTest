@@ -1,8 +1,9 @@
-import NextAuth, { Account, Profile, User } from "next-auth";
+import NextAuth, { Account, Profile, Session, User } from "next-auth";
 import { AdapterUser } from "next-auth/adapters";
 import { CredentialInput } from "next-auth/providers/credentials";
 import GithubProvider from "next-auth/providers/github";
 import APIRegisterUser from "@/scripts/TinyTestServerAPI/Users/RegisterUser";
+import { JWT } from "next-auth/jwt";
 
 export const authOptions = {
   providers: [
@@ -26,6 +27,29 @@ export const authOptions = {
     }) {
       await APIRegisterUser(user);
       return true;
+    },
+    async jwt({
+      token,
+      profile,
+    }: {
+      token: JWT;
+      user: User | AdapterUser;
+      account: Account | null;
+      profile?: Profile | undefined;
+      trigger?: "signIn" | "signUp" | "update" | undefined;
+      isNewUser?: boolean | undefined;
+      session?: any;
+    }) {
+      if (profile) {
+        // @ts-ignore
+        token.id = profile.id;
+      }
+      return token;
+    },
+    async session({ session, token }: { session: Session; token: JWT }) {
+      // @ts-ignore
+      session.user.id = token.id as number;
+      return session;
     },
   },
 };
