@@ -1,9 +1,9 @@
 import { User } from "next-auth";
-import APICall from "@/scripts/TinyTestServerAPI/APICall";
+import { APICallAsSystem } from "@/scripts/TinyTestServerAPI/APICall";
 
 export default async function APIRegisterUser(userInfo: User) {
   console.log(`Registering user ${JSON.stringify(userInfo)}`);
-  return await APICall(
+  return await APICallAsSystem(
     "/users/register_user",
     "POST",
     JSON.stringify(userInfo),

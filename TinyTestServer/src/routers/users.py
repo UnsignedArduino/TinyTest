@@ -9,6 +9,10 @@ from database.crud.users import (
     id_set_api_token,
     id_to_api_token,
     is_api_key_system,
+    is_user_id_admin,
+    is_user_id_registered,
+    is_user_id_system,
+    is_user_id_verified,
     register_user,
 )
 from database.schema.users import RegisteringUser
@@ -73,3 +77,16 @@ async def post_id_regenerate_api_token(
     token = secrets.token_hex(API_KEY_LENGTH)
     id_set_api_token(user_id, token)
     return {"api_token": token}
+
+
+@router.get(
+    "/roles",
+    summary="Get roles for a user.",
+)
+async def get_roles(user_id: int):
+    return {
+        "registered": is_user_id_registered(user_id),
+        "verified": is_user_id_verified(user_id),
+        "admin": is_user_id_admin(user_id),
+        "system": is_user_id_system(user_id),
+    }

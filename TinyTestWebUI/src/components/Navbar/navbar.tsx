@@ -1,9 +1,10 @@
 import Link from "next/link";
 import React from "react";
 import { NavbarDropdownThemePicker } from "./ThemePicker";
-// import icon from "../../../public/android-chrome-512x512.png";
+import icon from "../../../public/android-chrome-512x512.png";
 import { AppProps } from "../WithAppProps";
 import Profile from "@/components/Authentication/Profile";
+import Image from "next/image";
 
 const NavbarPages = {
   Home: "/",
@@ -32,16 +33,16 @@ function Navbar({
     <nav className="navbar sticky-top bg-body-tertiary navbar-expand-md">
       <div className="container-fluid">
         <div className="d-inline-flex align-items-center text-start">
-          {/*<Image*/}
-          {/*  src={icon}*/}
-          {/*  alt="Logo"*/}
-          {/*  className="d-inline-block me-1"*/}
-          {/*  style={{*/}
-          {/*    width: "1.5em",*/}
-          {/*    height: "1.5em",*/}
-          {/*    objectFit: "contain",*/}
-          {/*  }}*/}
-          {/*/>*/}
+          <Image
+            src={icon}
+            alt="Logo"
+            className="d-inline-block me-1"
+            style={{
+              width: "1.5em",
+              height: "1.5em",
+              objectFit: "contain",
+            }}
+          />
           <Link className="navbar-brand mb-0 ms-1 h1" href="/">
             {appName}
           </Link>
@@ -127,24 +128,41 @@ function Navbar({
           </div>
         </div>
         {(() => {
-          const elements = [];
+          const elements: { id: string; e: JSX.Element }[] = [];
           if (extraNavbarHTML) {
-            elements.push(extraNavbarHTML);
+            elements.push({ id: "enh", e: extraNavbarHTML });
           }
           if (!dontShowSignIn) {
-            elements.push(<Profile />);
+            elements.push({ id: "pfp", e: <Profile /> });
           }
-          elements.push(<NavbarDropdownThemePicker alignEnd />);
+          elements.push({
+            id: "dtp",
+            e: <NavbarDropdownThemePicker alignEnd />,
+          });
 
-          return elements.map((ele: JSX.Element, index: number) => {
-            return (
-              <>
-                <div className="d-flex d-none d-md-inline me-2">{ele}</div>
-                {index < elements.length - 1 ? (
-                  <div className="d-flex d-none d-md-inline vr me-2" />
-                ) : undefined}
-              </>
+          const actualElements: JSX.Element[] = [];
+
+          elements.map((ele, index) => {
+            actualElements.push(
+              <div
+                className="d-flex d-none d-md-inline me-2"
+                key={`content-${ele.id}`}
+              >
+                {ele.e}
+              </div>,
             );
+            if (index < elements.length - 1) {
+              actualElements.push(
+                <div
+                  className="d-flex d-none d-md-inline vr me-2"
+                  key={`div-${ele.id}`}
+                />,
+              );
+            }
+          });
+
+          return actualElements.map((e) => {
+            return e;
           });
         })()}
       </div>

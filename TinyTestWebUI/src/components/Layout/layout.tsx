@@ -10,6 +10,7 @@ import Notifications from "../Notifications";
 import TOSBanner from "../TOSBanner";
 import { AppProps } from "../WithAppProps";
 import ProfileOffcanvas from "@/components/Authentication/Offcanvas";
+import UserContextProvider from "@/components/AccessManagement/UserContextProvider";
 
 const appName = "TinyTest";
 
@@ -167,47 +168,50 @@ LayoutProps): JSX.Element {
         {/* <meta property="og:image" content="/opengraph.png" /> */}
         {/* <meta name="twitter:image" content="/opengraph.png" /> */}
       </Head>
+      <UserContextProvider>
+        <>
+          <Navbar
+            appName={appName}
+            appProps={appProps}
+            currentPage={currentPage}
+            extraNavbarHTML={extraNavbarHTML}
+            dontShowSignIn={dontShowSignIn}
+          />
+          <ProfileOffcanvas />
 
-      <Navbar
-        appName={appName}
-        appProps={appProps}
-        currentPage={currentPage}
-        extraNavbarHTML={extraNavbarHTML}
-        dontShowSignIn={dontShowSignIn}
-      />
-      <ProfileOffcanvas />
+          {dontShowServicesWarning ? <></> : <TOSBanner />}
+          {/* {dontShowAdblockerWarning ? <></> : <AdblockDetectionBanner />} */}
 
-      {dontShowServicesWarning ? <></> : <TOSBanner />}
-      {/* {dontShowAdblockerWarning ? <></> : <AdblockDetectionBanner />} */}
+          <ErrorBoundary>
+            <main>
+              {(() => {
+                if (putInDIV == undefined || putInDIV) {
+                  return (
+                    <div className="container-fluid p-2">
+                      <>
+                        {breadCrumbsHTML}
+                        {children}
+                      </>
+                    </div>
+                  );
+                } else {
+                  return (
+                    <>
+                      {breadCrumbsHTML}
+                      {children}
+                    </>
+                  );
+                }
+              })()}
+            </main>
+          </ErrorBoundary>
 
-      <ErrorBoundary>
-        <main>
-          {(() => {
-            if (putInDIV == undefined || putInDIV) {
-              return (
-                <div className="container-fluid p-2">
-                  <>
-                    {breadCrumbsHTML}
-                    {children}
-                  </>
-                </div>
-              );
-            } else {
-              return (
-                <>
-                  {breadCrumbsHTML}
-                  {children}
-                </>
-              );
-            }
-          })()}
-        </main>
-      </ErrorBoundary>
+          {showFooter == undefined || showFooter ? <Footer /> : <></>}
 
-      {showFooter == undefined || showFooter ? <Footer /> : <></>}
-
-      <Notifications />
-      <ThemeProxy />
+          <Notifications />
+          <ThemeProxy />
+        </>
+      </UserContextProvider>
     </ErrorBoundary>
   );
 }
