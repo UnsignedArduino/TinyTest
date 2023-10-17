@@ -10,6 +10,7 @@ export async function APICallAsSystem(
       method: method,
       headers: {
         "Content-Type": "application/json",
+        "ngrok-skip-browser-warning": "pls",
         "X-API-token": process.env.SYSTEM_API_KEY as string,
       },
       body: body,
@@ -33,6 +34,7 @@ export async function APICallDirectAsUser(
       method: method,
       headers: {
         "Content-Type": "application/json",
+        "ngrok-skip-browser-warning": "pls",
       },
       body: body,
     }),
