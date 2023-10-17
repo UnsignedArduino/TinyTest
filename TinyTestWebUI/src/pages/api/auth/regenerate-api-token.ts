@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "./[...nextauth]";
-import APICall from "@/scripts/TinyTestServerAPI/APICall";
+import { APICallAsSystem } from "@/scripts/TinyTestServerAPI/APICall";
 
 export default async function handler(
   req: NextApiRequest,
@@ -16,7 +16,7 @@ export default async function handler(
       .status(200)
       .json(
         await (
-          await APICall("/users/id_regenerate_api_token", "POST", id)
+          await APICallAsSystem("/users/id_regenerate_api_token", "POST", id)
         ).json(),
       );
   } else {

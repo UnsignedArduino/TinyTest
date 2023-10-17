@@ -8,6 +8,7 @@ import {
   useSession,
 } from "next-auth/react";
 import React from "react";
+import RoleBadges from "@/components/Settings/RoleBadges";
 
 export default function ProfileOffcanvas() {
   const { data: session } = useSession();
@@ -34,7 +35,19 @@ export default function ProfileOffcanvas() {
           <>
             <div className="offcanvas-header">
               <h5 className="offcanvas-title" id="profileOffcanvasLabel">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={session!.user!.image!}
+                  alt={`Profile picture of ${session!.user!.name}`}
+                  style={{
+                    width: "1.5em",
+                    height: "1.5em",
+                    objectFit: "contain",
+                    borderRadius: "50%",
+                  }}
+                />{" "}
                 Signed in as {session.user!.name}
+                <br /> <RoleBadges />
               </h5>
               <button
                 type="button"

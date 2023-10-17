@@ -1,7 +1,11 @@
 import { getEnvironment } from "@/components/WithAppProps";
 
 export default async function generateSiteWebmanifest(): Promise<string> {
-  `
+  const json = JSON.parse(`{
+  "name": "TinyTest",
+  "short_name": "TinyTest",
+  "description": "A distributed testing program for chess engines.",
+  "start_url": "/",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
@@ -14,15 +18,8 @@ export default async function generateSiteWebmanifest(): Promise<string> {
       "type": "image/png"
     }
   ],
-  "theme_color": "#FFF603",
-  "background_color": "#FFF603",
-  `;
-  const json = JSON.parse(`{
-  "name": "TinyTest",
-  "short_name": "TinyTest",
-  "description": "A distributed testing program for chess engines.",
-  "start_url": "/",
-  
+  "theme_color": "#FFFFFF",
+  "background_color": "#FFFFFF",
   "display": "standalone"
 }`);
   json.name = json.short_name = `TinyTest${(() => {

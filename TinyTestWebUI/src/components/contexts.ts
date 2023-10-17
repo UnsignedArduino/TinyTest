@@ -1,3 +1,9 @@
 import React from "react";
 
-export const UserAPITokenContext = React.createContext<string | null>(null);
+export interface UserInterface {
+  apiToken: string;
+  verified: boolean;
+  admin: boolean;
+}
+
+export const UserContext = React.createContext<UserInterface | null>(null);
