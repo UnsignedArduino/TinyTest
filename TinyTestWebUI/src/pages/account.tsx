@@ -28,7 +28,7 @@ function AccountSignedIn() {
 
   return (
     <div>
-      <p>
+      <div className="mb-2">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={session!.user!.image!}
@@ -51,7 +51,7 @@ function AccountSignedIn() {
             manually verify you!
           </div>
         ) : undefined}
-      </p>
+      </div>
       <APITokenSetting />
     </div>
   );
