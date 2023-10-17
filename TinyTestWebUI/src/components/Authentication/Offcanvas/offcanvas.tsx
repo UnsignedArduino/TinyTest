@@ -115,6 +115,10 @@ export default function ProfileOffcanvas() {
                   sign in with!
                 </p>
               )}
+              <div className="alert alert-info mt-3" role="alert">
+                If this is your first time signing in, you will need to be
+                manually verified, please be patient until then!
+              </div>
             </div>
           </>
         )}
