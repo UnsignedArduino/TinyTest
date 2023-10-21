@@ -35,8 +35,7 @@ Need to be verified to claim games to run.
 * Engine 1 (git url, commit, build configuration id)
 * Engine 2 (git url, commit, build configuration id)
 * Sprt Params (elo 1, elo 2, alpha, beta, game count, time control, opening book id)
-* Queued games (int)
-* Running games (int)
+* Games (requested, queued, running)
 * Finished games (white mates, black mates, draws, canceled, errors)
 * Result (queued, running, canceled, error, elo diff)
 * Scheduled by (user id)
@@ -60,3 +59,5 @@ Will be used by both client and web. Reading does not need authentication, writi
 * Id
 * Name
 * ZIP contents
+* Compression format
+* Book format
