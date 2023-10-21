@@ -33,11 +33,14 @@ export default function OpeningBooks({ appProps }: { appProps: AppProps }) {
     setBookStatus("loading");
     APICallDirectAsUser("/opening-books/all", "GET", undefined)
       .then((response) => {
-        return response.json();
-      })
-      .then((json) => {
-        setBooks(json);
-        setBookStatus("fetched");
+        if (response.status != 200) {
+          setBookStatus("error");
+        } else {
+          response.json().then((json) => {
+            setBooks(json);
+            setBookStatus("fetched");
+          });
+        }
       })
       .catch(() => {
         setBookStatus("error");
