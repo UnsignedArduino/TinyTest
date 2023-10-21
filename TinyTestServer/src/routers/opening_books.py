@@ -48,7 +48,11 @@ async def get_content(book_id: int):
     meta = id_get_book(book_id)
     contents = b85decode(id_get_book_contents(book_id))
 
-    filename = meta.name.replace(" ", "_") + "." + meta.book_format
+    filename = (
+        meta.name.replace(" ", "_") + "." + meta.book_format + ".zip"
+        if meta.compression_format == "zip"
+        else ""
+    )
 
     if meta.compression_format == "zip":
         media_type = "application/zip"
@@ -58,7 +62,7 @@ async def get_content(book_id: int):
         else:
             media_type = "text/plain"
 
-    headers = {"Content-Disposition": f'inline; filename="{filename}"'}
+    headers = {"Content-Disposition": f'attachment; filename="{filename}"'}
     return Response(contents, headers=headers, media_type=media_type)
 
 
