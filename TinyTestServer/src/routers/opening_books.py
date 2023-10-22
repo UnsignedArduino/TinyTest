@@ -46,18 +46,15 @@ async def get_content(book_id: int):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
 
     meta = id_get_book(book_id)
-    contents = b85decode(id_get_book_contents(book_id))
+    book_bytes = id_get_book_contents(book_id)
+    contents = b85decode(book_bytes) if book_bytes is not None else None
 
-    filename = (
-        meta.name.replace(" ", "_") + "." + meta.book_format + ".zip"
-        if meta.compression_format == "zip"
-        else ""
-    )
+    filename = meta.name
 
-    if meta.compression_format == "zip":
+    if ".zip" in filename:
         media_type = "application/zip"
     else:
-        if meta.book_format == "pgn":
+        if ".pgn" in filename:
             media_type = "application/vnd.chess-pgn"
         else:
             media_type = "text/plain"

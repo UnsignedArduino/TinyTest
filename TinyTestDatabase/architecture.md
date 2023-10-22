@@ -58,6 +58,4 @@ Will be used by both client and web. Reading does not need authentication, writi
 
 * Id
 * Name
-* ZIP contents
-* Compression format
-* Book format
+* Contents

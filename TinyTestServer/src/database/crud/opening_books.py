@@ -31,8 +31,6 @@ def id_get_book(book_id: int) -> Optional[OpeningBookWithoutContents]:
             select(
                 DBOpeningBook.id,
                 DBOpeningBook.name,
-                DBOpeningBook.compression_format,
-                DBOpeningBook.book_format,
             ).where(DBOpeningBook.id == book_id)
         ).first()
         if result is None:
@@ -43,14 +41,7 @@ def id_get_book(book_id: int) -> Optional[OpeningBookWithoutContents]:
 
 def id_get_all_books() -> list[OpeningBookWithoutContents]:
     with Session(engine) as session:
-        result = session.execute(
-            select(
-                DBOpeningBook.id,
-                DBOpeningBook.name,
-                DBOpeningBook.compression_format,
-                DBOpeningBook.book_format,
-            )
-        )
+        result = session.execute(select(DBOpeningBook.id, DBOpeningBook.name))
         books = []
         for row in result:
             books.append(OpeningBookWithoutContents(**row._mapping))
@@ -79,32 +70,17 @@ def id_set_book(book: OpeningBookWithoutContents) -> int:
         )
         if book_exists:
             conn.execute(
-                text(
-                    "UPDATE opening_books "
-                    "SET name=:name, compression_format=:compression_format, "
-                    "book_format=:book_format WHERE id=:id"
-                ),
+                text("UPDATE opening_books SET name=:name WHERE id=:id"),
                 {
                     "name": book.name,
-                    "compression_format": book.compression_format,
-                    "book_format": book.book_format,
                     "id": book.id,
                 },
             )
             return book.id
         else:
             result = conn.execute(
-                text(
-                    "INSERT INTO opening_books "
-                    "(name, compression_format, book_format) "
-                    "VALUES (:name, :compression_format, :book_format) "
-                    "RETURNING id"
-                ),
-                {
-                    "name": book.name,
-                    "compression_format": book.compression_format,
-                    "book_format": book.book_format,
-                },
+                text("INSERT INTO opening_books (name) VALUES (:name) RETURNING id"),
+                {"name": book.name},
             ).first()
             return int(result[0])
 
