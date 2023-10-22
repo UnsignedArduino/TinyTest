@@ -132,7 +132,7 @@ def register_user(user: RegisteringUser):
         )
 
 
-def id_to_api_token(user_id: int) -> Optional[str]:
+def id_get_api_token(user_id: int) -> Optional[str]:
     with engine.connect() as conn:
         result = conn.execute(
             text("SELECT api_key FROM users WHERE id=:id"),

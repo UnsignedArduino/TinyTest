@@ -6,8 +6,8 @@ from fastapi import APIRouter, Body, HTTPException, Header, status
 
 from consts import API_KEY_LENGTH
 from database.crud.users import (
+    id_get_api_token,
     id_set_api_token,
-    id_to_api_token,
     is_api_key_system,
     is_user_id_admin,
     is_user_id_registered,
@@ -37,7 +37,7 @@ StringHeader = Annotated[str | None, Header()]
 async def post_register_user(
     registering_user: RegisteringUser,
     x_api_token: StringHeader = None,
-):
+) -> None:
     if (
         not is_api_key_system(x_api_token)
         or registering_user.id == "1"
@@ -54,14 +54,14 @@ async def post_register_user(
 async def post_id_to_api_token(
     user_id: Annotated[int, Body()],
     x_api_token: StringHeader = None,
-):
+) -> str:
     if not is_api_key_system(x_api_token) or user_id == 1:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
-    token = id_to_api_token(user_id)
+    token = id_get_api_token(user_id)
     if token is None:
         token = secrets.token_hex(API_KEY_LENGTH)
         id_set_api_token(user_id, token)
-    return {"api_token": token}
+    return token
 
 
 @router.post(
@@ -71,12 +71,12 @@ async def post_id_to_api_token(
 async def post_id_regenerate_api_token(
     user_id: Annotated[int, Body()],
     x_api_token: StringHeader = None,
-):
+) -> str:
     if not is_api_key_system(x_api_token) or user_id == 1:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
     token = secrets.token_hex(API_KEY_LENGTH)
     id_set_api_token(user_id, token)
-    return {"api_token": token}
+    return token
 
 
 @router.get(

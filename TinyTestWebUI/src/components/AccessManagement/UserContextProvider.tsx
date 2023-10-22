@@ -17,6 +17,7 @@ export default function UserContextProvider({
   React.useEffect(() => {
     setUserContext(null);
     if (!session) {
+      console.log("No session found!");
       return;
     }
     let apiToken: string = "";
@@ -25,7 +26,7 @@ export default function UserContextProvider({
         return response.json();
       })
       .then((json) => {
-        apiToken = json.api_token;
+        apiToken = json;
       })
       .then(() => {
         return APICallDirectAsUser(
@@ -39,6 +40,7 @@ export default function UserContextProvider({
         return response.json();
       })
       .then((json) => {
+        console.log("Successfully fetched API token and roles!");
         setUserContext({
           apiToken: apiToken,
           verified: json.verified,
