@@ -24,4 +24,10 @@ class DBOpeningBook(DBBase):
     contents: Mapped[Optional[str]] = mapped_column(Text())
 
     def __repr__(self) -> str:
-        return f"DBOpeningBook(" f"id={self.id!r}, name={self.name!r})" f")"
+        return (
+            f"DBOpeningBook("
+            f"id={self.id!r}, "
+            f"name={self.name!r}), "
+            f"contents=<{len(self.contents)} chars>"
+            f")"
+        )
