@@ -39,7 +39,7 @@ def id_get_book(book_id: int) -> Optional[OpeningBookWithoutContents]:
             return OpeningBookWithoutContents(**result._mapping)
 
 
-def id_get_all_books() -> list[OpeningBookWithoutContents]:
+def get_all_books() -> list[OpeningBookWithoutContents]:
     with Session(engine) as session:
         result = session.execute(select(DBOpeningBook.id, DBOpeningBook.name))
         books = []

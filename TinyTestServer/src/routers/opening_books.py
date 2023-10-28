@@ -6,8 +6,8 @@ from fastapi import APIRouter, Body, HTTPException, Header, Response, UploadFile
 
 from database.crud.opening_books import (
     book_id_exist,
+    get_all_books,
     id_delete_book,
-    id_get_all_books,
     id_get_book,
     id_get_book_contents,
     id_set_book,
@@ -36,8 +36,8 @@ async def get_root(book_id: int):
 
 
 @router.get("/all", summary="Get all books.")
-async def get_root():
-    return id_get_all_books()
+async def get_all():
+    return get_all_books()
 
 
 @router.get("/content", summary="Get book content from ID.")
